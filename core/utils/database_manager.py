@@ -81,7 +81,7 @@ def get_all_user_ids() -> list:
     data = cursor.fetchall()
     result = []
     for user_data in data:
-        result.append(user_data[1])
+        result.append(user_data[0])
     return result
 
 
