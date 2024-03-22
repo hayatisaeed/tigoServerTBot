@@ -12,7 +12,7 @@ def user_exists(user_id: int) -> bool:
     conn = sqlite3.connect(f"data/UserData.db")
     cursor = conn.cursor()
     cursor.execute("""CREATE TABLE IF NOT EXISTS profiles
-    (user_id INTEGER, username TEXT, phone TEXT, ref INTEGER, credit REAL""")
+    (user_id INTEGER, username TEXT, phone TEXT, ref INTEGER, credit REAL)""")
     conn.commit()
     cursor.execute(f"SELECT * FROM profiles WHERE user_id={user_id}")
     row = cursor.fetchone()
