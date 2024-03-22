@@ -13,6 +13,7 @@ from telegram.ext import (
 import core.config as config
 import core.handlers.start_handler
 import core.handlers.admin_handlers.broadcast_handler
+import core.handlers.help_handler
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
