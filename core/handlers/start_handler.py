@@ -41,3 +41,8 @@ async def handle(update: Update, context: CallbackContext):
         await core.handlers.user_handlers.start_handler.handle(update, context)
     else:  # admin
         await core.handlers.admin_handlers.start_handler.handle(update, context)
+
+
+async def return_home(update: Update, context: CallbackContext):
+    await handle(update, context)
+    return ConversationHandler.END

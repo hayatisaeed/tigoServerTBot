@@ -65,9 +65,24 @@ def edit_user(user_id: int, parameter: str, value):
 def get_user_data(user_id: int) -> dict:
     """
     Gets user data of a specific user.
-    :param user_id: user_id of corresponding user
+    :param user_id: user_id of corresponding user, 0 for all users
     :return: a dictionary, containing user data
     """
+
+
+def get_all_user_ids() -> list:
+    """
+    Get all user ids
+    :return: a list of user ids
+    """
+    conn = sqlite3.connect('data/UserData.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM profiles")
+    data = cursor.fetchall()
+    result = []
+    for user_data in data:
+        result.append(user_data[1])
+    return result
 
 
 def new_transaction(user_id: int, amount: float, transaction_type: str, payment_hash: str, date: datetime.date,
