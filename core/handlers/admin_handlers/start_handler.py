@@ -3,7 +3,9 @@ from telegram.ext import CallbackContext
 import core.config as config
 
 
-admin_start_reply_keyboard = []
+admin_start_reply_keyboard = [
+    ['پیام همگانی']
+]
 admin_start_reply_markup = ReplyKeyboardMarkup(admin_start_reply_keyboard, one_time_keyboard=True)
 
 
