@@ -15,6 +15,7 @@ import core.handlers.start_handler
 import core.handlers.admin_handlers.broadcast_handler
 import core.handlers.help_handler
 import core.handlers.admin_handlers.user_management
+import core.handlers.user_handlers.profile_handler
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -85,6 +86,9 @@ def main():
     # --- CallbackQuery Handlers
 
     # --- Message Handlers
+
+    user_profile_handler = MessageHandler(filters.Regex('^پروفایل کاربری$'),
+                                          core.handlers.user_handlers.profile_handler.handle)
 
     # ------------ end define handlers ------------ #
 
