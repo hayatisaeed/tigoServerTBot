@@ -18,7 +18,7 @@ def user_exists(user_id: int) -> bool:
                    "            username TEXT,\n"
                    "            phone TEXT,\n"
                    "            ref INTEGER,\n"
-                   "            credit REAL\n"
+                   "            credit REAL,\n"
                    "            verified BOOLEAN\n"
                    "        )")
     conn.commit()
@@ -52,7 +52,7 @@ def create_user(user_id: int, username: str, phone: str, credit=0.0, ref=0, veri
     "            username TEXT,\n"
     "            phone TEXT,\n"
     "            ref INTEGER,\n"
-    "            credit REAL\n"
+    "            credit REAL,\n"
     "            verified BOOLEAN\n"
     "        )")
     cursor.execute("INSERT INTO profiles (user_id, username, phone, credit, ref, verified) VALUES (?, ?, ?, ?, ?, ?)",
