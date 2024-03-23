@@ -138,7 +138,7 @@ def user_is_blocked(user_id: int) -> bool:
 
     conn = sqlite3.connect('data/UserData.db')
     cursor = conn.cursor()
-    cursor.execute("CREATE TABLE IF NOT EXISTS blocked_users( id INTEGER PRIMARY KEY, user_id INTEGER)")
+    cursor.execute("CREATE TABLE IF NOT EXISTS blocked_users(user_id INTEGER)")
     conn.commit()
     cursor.execute("SELECT * FROM blocked_users WHERE user_id=?", (user_id,))
     data = cursor.fetchall()
@@ -159,15 +159,17 @@ def block_unblock_user(user_id: int):
     """
     conn = sqlite3.connect('data/UserData.db')
     cursor = conn.cursor()
-    cursor.execute("CREATE TABLE IF NOT EXISTS blocked_users( id INTEGER PRIMARY KEY, user_id INTEGER)")
+    cursor.execute("CREATE TABLE IF NOT EXISTS blocked_users(user_id INTEGER)")
     conn.commit()
     cursor.execute("SELECT * FROM blocked_users WHERE user_id=?", (user_id,))
     data = cursor.fetchall()
 
     if len(data) > 0:
         cursor.execute("DELETE FROM blocked_users WHERE user_id=?", (user_id,))
+        print("here1")
     else:
         cursor.execute("INSERT INTO blocked_users (user_id) VALUES (?)", (user_id,))
+        print("here2")
 
     cursor.close()
     conn.close()
