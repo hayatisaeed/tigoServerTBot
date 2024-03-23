@@ -47,7 +47,7 @@ def create_user(user_id: int, username: str, phone: str, credit=0.0, ref=0, veri
     "            credit REAL\n"
     "            verified BOOLEAN\n"
     "        )")
-    cursor.execute("INSERT INTO profiles (user_id, username, phone, credit, ref, verified) VALUES (?, ?, ?, ?, ?)",
+    cursor.execute("INSERT INTO profiles (user_id, username, phone, credit, ref, verified) VALUES (?, ?, ?, ?, ?, ?)",
                    (user_id, username, phone, credit, ref, verified))
     conn.commit()
     cursor.close()
