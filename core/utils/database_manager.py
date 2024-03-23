@@ -110,7 +110,7 @@ def get_all_user_ids() -> list:
     conn.close()
     result = []
     for user_data in data:
-        result.append(user_data[0])
+        result.append(user_data[1])
     return result
 
 

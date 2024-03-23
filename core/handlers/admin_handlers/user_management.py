@@ -44,7 +44,7 @@ async def list_of_users(update: Update, context: CallbackContext):
     
     """
     for user_id in users:
-        text += f" ```{user_id}```  "
+        text += f" `{user_id}`  "
 
     text += """
     برای مدیریت هر کاربر، در بخش مدیریت کاربر، آیدی عددی او را ارسال کنید.
@@ -82,23 +82,23 @@ async def get_user_id(update: Update, context: CallbackContext):
         text = f"""
         👤 اطلاعات این کاربر به شرح زیر است
         
-        🆔 آیدی عددی:
-        ```{user_id}```
+        آیدی عددی:
+        `{user_id}`
         
         💳 موجودی:
-        ```{user_data['credit']}``` ریال
+        `{user_data['credit']}` ریال
         
         📞 شماره تلفن:
-        ```{user_data['phone']}```
+        `{user_data['phone']}`
         
         🚔 وضعیت:
-        ```{'✅ verified' if user_data['verified'] else '❌ not verified'}```
+        `{'✅ verified' if user_data['verified'] else '❌ not verified'}`
         
         🪙 آیدی معرف:
-        ```{'None' if not user_data['ref'] else user_data['ref']}```
+        `{'None' if not user_data['ref'] else user_data['ref']}`
         
         💬 آیدی تلگرام:
-        ```{'@' + user_data['username'] if user_data['username'] != 'none' else 'None'}```
+        `{'@' + user_data['username'] if user_data['username'] != 'none' else 'None'}`
         
         {'🔴 این کاربر بلاک شده است'
         if user_is_blocked else ''}
@@ -133,7 +133,7 @@ async def block_unblock_user(update: Update, context: CallbackContext):
 
     text = f"""
      🆔 آیدی عددی:
-    ```{user_id}```
+    `{user_id}`
             
     {
     '🟢 این کاربر از لیست بلاک شده ها خارج شد'
