@@ -112,11 +112,68 @@ async def get_user_id(update: Update, context: CallbackContext):
 
 
 async def change_credit(update: Update, context: CallbackContext):
-    pass
+    user_id = context.user_data['current_user']
+    user_id = int(user_id)
+    user_data = core.utils.database_manager.get_user_data(user_id)
+    user_credit = int(user_data['credit'])
+    text = f"""
+    موجودی کاربر با مشخصات زیر:
+    
+    id: {user_id}
+    username: {user_data['username']}
+    
+    برابر است با:
+    {user_credit}
+    ریال
+    
+    موجودی جدید را به صورت یک عدد لاتین و بر حسب ریال ارسال کنید    
+    """
+    await context.bot.send_message(chat_id=config.AdminData.adminChatId, text=text, reply_markup=cancel_markup)
+    return 'GET_NEW_CREDIT'
 
 
 async def change_credit_get_number(update: Update, context: CallbackContext):
-    pass
+    user_id = context.user_data['current_user']
+    user_id = int(user_id)
+    new_credit = update.message.text
+    user_data = core.utils.database_manager.get_user_data(user_id)
+    past_credit = int(user_data['credit'])
+
+    try:
+        new_credit = int(new_credit)
+        core.utils.database_manager.edit_user(user_id, 'credit', float(new_credit))
+        text_for_admin = f"""
+        موجودی سابق:
+        {past_credit}
+        
+        موجودی جدید:
+        {new_credit}
+        
+        تمامی اعداد بر حسب ریال
+        """
+        text_for_user = f"""
+        💰 موجودی شما توسط ادمین تغییر داده شد!
+        
+        موجودی قبلی:
+        {past_credit}
+        
+        موجودی جدید:
+        {new_credit}
+        
+        (تمامی اعداد بر حسب ریال)
+        """
+
+        await context.bot.send_message(chat_id=user_id, text=text_for_user)
+        await context.bot.send_message(chat_id=config.AdminData.adminChatId, text=text_for_admin,
+                                       reply_markup=manage_user_markup)
+        return 'CHOOSING_MANAGE_USER'
+
+    except ValueError:
+        text = """
+        مقدار وارد شده غیر قابل قبول است. لطفا یک عدد لاتین ارسال کنید.
+        """
+        await context.bot.send_message(chat_id=config.AdminData.adminChatId, text=text, reply_markup=cancel_markup)
+        return 'GET_NEW_CREDIT'
 
 
 async def send_message_to_user(update: Update, context: CallbackContext):
@@ -124,7 +181,7 @@ async def send_message_to_user(update: Update, context: CallbackContext):
     user_id = int(user_id)
     user_data = core.utils.database_manager.get_user_data(user_id)
 
-    text = """
+    text = f"""
     شما در حال ارسال پیام به کاربر با مشخصات زیر میباشید:
     id: {user_id}
     username: @{user_data['username']}

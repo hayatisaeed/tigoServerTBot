@@ -70,6 +70,13 @@ def edit_user(user_id: int, parameter: str, value):
     :param value: value of the parameter
     :return: void
     """
+    conn = sqlite3.connect('data/UserData.db')
+    cursor = conn.cursor()
+
+    query = f"UPDATE profiles SET {parameter} = ? WHERE user_id = ?"
+    cursor.execute(query, (value, user_id))
+    conn.commit()
+    cursor.close()
 
 
 def get_user_data(user_id: int) -> dict:
