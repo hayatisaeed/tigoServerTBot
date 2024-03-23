@@ -70,6 +70,25 @@ def get_user_data(user_id: int) -> dict:
     :param user_id: user_id of corresponding user
     :return: a dictionary, containing user data
     """
+    # Connect to the database
+    conn = sqlite3.connect('data/UserData.db')
+    cursor = conn.cursor()
+
+    # Execute the SELECT query
+    cursor.execute("SELECT * FROM profiles WHERE user_id=?", (user_id,))
+    user_data = cursor.fetchone()
+
+    # If user_data is not None, convert it to dictionary format
+    if user_data:
+        columns = [column[0] for column in cursor.description]
+        user_dict = dict(zip(columns, user_data))
+    else:
+        user_dict = {}  # Return an empty dictionary if user not found
+
+    # Close the connection
+    conn.close()
+
+    return user_dict
 
 
 def get_all_user_ids() -> list:
