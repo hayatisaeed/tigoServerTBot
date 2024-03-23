@@ -74,7 +74,14 @@ def main():
                 MessageHandler(filters.Regex('^انصراف$'), core.handlers.start_handler.return_home),
                 MessageHandler(filters.Regex('^block / unblock$'),
                                core.handlers.admin_handlers.user_management.block_unblock_user),
+                MessageHandler(filters.Regex('^پیام به کاربر$'),
+                               core.handlers.admin_handlers.user_management.send_message_to_user),
                 MessageHandler(filters.ALL, core.handlers.start_handler.return_home)
+            ],
+            'GET_MESSAGE': [
+                MessageHandler(filters.Regex('^انصراف$'), core.handlers.start_handler.return_home),
+                MessageHandler(filters.ALL,
+                               core.handlers.admin_handlers.user_management.send_message_to_user_get_message)
             ]
         },
         fallbacks=[

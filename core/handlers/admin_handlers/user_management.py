@@ -120,11 +120,31 @@ async def change_credit_get_number(update: Update, context: CallbackContext):
 
 
 async def send_message_to_user(update: Update, context: CallbackContext):
-    pass
+    user_id = context.user_data['current_user']
+    user_id = int(user_id)
+    user_data = core.utils.database_manager.get_user_data(user_id)
+
+    text = """
+    شما در حال ارسال پیام به کاربر با مشخصات زیر میباشید:
+    id: {user_id}
+    username: @{user_data['username']}
+    
+    لطفا پیام خود را ارسال کنید
+    """
+    await context.bot.send_message(chat_id=config.AdminData.adminChatId, text=text, reply_markup=cancel_markup)
+    return 'GET_MESSAGE'
 
 
 async def send_message_to_user_get_message(update: Update, context: CallbackContext):
-    pass
+    user_id = context.user_data['current_user']
+
+    await context.bot.copy_message(chat_id=user_id, from_chat_id=config.AdminData.adminChatId,
+                                   message_id=update.message.message_id)
+    text = """
+    پیام با موفقیت ارسال شد.
+    """
+    await context.bot.send_message(chat_id=config.AdminData.adminChatId, text=text, reply_markup=manage_user_markup)
+    return 'CHOOSING_MANAGE_USER'
 
 
 async def block_unblock_user(update: Update, context: CallbackContext):
