@@ -76,6 +76,8 @@ def main():
                                core.handlers.admin_handlers.user_management.block_unblock_user),
                 MessageHandler(filters.Regex('^پیام به کاربر$'),
                                core.handlers.admin_handlers.user_management.send_message_to_user),
+                MessageHandler(filters.Regex('^ویرایش موجودی$'),
+                               core.handlers.admin_handlers.user_management.change_credit),
                 MessageHandler(filters.ALL, core.handlers.start_handler.return_home)
             ],
             'GET_MESSAGE': [
