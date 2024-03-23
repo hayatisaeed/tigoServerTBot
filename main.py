@@ -103,7 +103,8 @@ def main():
 
     # creating a list of handlers to add them easily
     handlers = [
-        start_handler, help_handler, admin_broadcast_conv_handler, admin_user_management_conv_handler
+        start_handler, help_handler, admin_broadcast_conv_handler, admin_user_management_conv_handler,
+        user_profile_handler
     ]
 
     # Add Handlers To Application
