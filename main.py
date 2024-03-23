@@ -48,7 +48,7 @@ def main():
     )
 
     admin_user_management_conv_handler = ConversationHandler(
-        entry_points=[MessageHandler(filters.Regex('^text$'),
+        entry_points=[MessageHandler(filters.Regex('^کاربران$'),
                                      core.handlers.admin_handlers.user_management.handle)],
         states={
             "CHOOSING": [
