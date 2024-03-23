@@ -14,6 +14,7 @@ import core.config as config
 import core.handlers.start_handler
 import core.handlers.admin_handlers.broadcast_handler
 import core.handlers.help_handler
+import core.handlers.admin_handlers.user_management
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -46,6 +47,41 @@ def main():
         ]
     )
 
+    admin_user_management_conv_handler = ConversationHandler(
+        entry_points=[MessageHandler(filters.Regex('^text$'),
+                                     core.handlers.admin_handlers.user_management.handle)],
+        states={
+            "CHOOSING": [
+                MessageHandler(filters.Regex('^انصراف$'), core.handlers.start_handler.return_home),
+                MessageHandler(filters.Regex('^لیست کاربران$'),
+                               core.handlers.admin_handlers.user_management.list_of_users),
+                MessageHandler(filters.Regex('^مدیریت کاربر$'),
+                               core.handlers.admin_handlers.user_management.manage_user),
+                MessageHandler(filters.ALL, core.handlers.start_handler.return_home)
+            ],
+            "GET_USER_ID": [
+                MessageHandler(filters.Regex('^انصراف$'), core.handlers.start_handler.return_home),
+                MessageHandler(filters.TEXT, core.handlers.admin_handlers.user_management.get_user_id),
+                MessageHandler(filters.ALL, core.handlers.start_handler.return_home)
+            ],
+            "GET_NEW_CREDIT": [
+                MessageHandler(filters.Regex('^انصراف$'), core.handlers.start_handler.return_home),
+                MessageHandler(filters.TEXT, core.handlers.admin_handlers.user_management.change_credit_get_number),
+                MessageHandler(filters.ALL, core.handlers.start_handler.return_home)
+            ],
+            'CHOOSING_MANAGE_USER': [
+                MessageHandler(filters.Regex('^انصراف$'), core.handlers.start_handler.return_home),
+                MessageHandler(filters.Regex('^block / unblock$'),
+                               core.handlers.admin_handlers.user_management.block_unblock_user),
+                MessageHandler(filters.ALL, core.handlers.start_handler.return_home)
+            ]
+        },
+        fallbacks=[
+            MessageHandler(filters.Regex('^انصراف$'), core.handlers.start_handler.return_home),
+            MessageHandler(filters.COMMAND, core.handlers.start_handler.return_home)
+        ]
+    )
+
     # --- CallbackQuery Handlers
 
     # --- Message Handlers
@@ -53,7 +89,9 @@ def main():
     # ------------ end define handlers ------------ #
 
     # creating a list of handlers to add them easily
-    handlers = [start_handler, help_handler, admin_broadcast_conv_handler]
+    handlers = [
+        start_handler, help_handler, admin_broadcast_conv_handler, admin_user_management_conv_handler
+    ]
 
     # Add Handlers To Application
     for handler in handlers:

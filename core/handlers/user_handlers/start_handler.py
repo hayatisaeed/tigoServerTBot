@@ -2,7 +2,9 @@ from telegram import Update, ReplyKeyboardMarkup
 from telegram.ext import CallbackContext
 
 
-user_start_reply_keyboard = []
+user_start_reply_keyboard = [
+    ['پروفایل کاربری']
+]
 user_start_reply_markup = ReplyKeyboardMarkup(user_start_reply_keyboard, one_time_keyboard=True)
 
 

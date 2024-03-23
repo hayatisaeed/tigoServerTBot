@@ -21,4 +21,4 @@ name = ConversationHandler(
             MessageHandler(filters.Regex('^انصراف$'), core.handlers.start_handler.return_home),
             MessageHandler(filters.COMMAND, core.handlers.start_handler.return_home)
         ]
-    )
+)

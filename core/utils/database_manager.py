@@ -24,7 +24,7 @@ def user_exists(user_id: int) -> bool:
         return False
 
 
-def create_user(user_id: int, username: str, phone: str, credit=0.0, ref=0):
+def create_user(user_id: int, username: str, phone: str, credit=0.0, ref=0, verified=False):
     """
     Creates a new user in the UserData, in table profiles. if table does not exist, it will be created.
     :param user_id: user_id of new user
@@ -32,6 +32,7 @@ def create_user(user_id: int, username: str, phone: str, credit=0.0, ref=0):
     :param phone: (0: does not exist)
     :param credit: by default its 0
     :param ref: user_id of ref (0: does not exist)
+    :param verified: False if user is not verified, True otherwise
     :return: void
     """
     conn = sqlite3.connect(f"data/UserData.db")
@@ -44,9 +45,10 @@ def create_user(user_id: int, username: str, phone: str, credit=0.0, ref=0):
     "            phone TEXT,\n"
     "            ref INTEGER,\n"
     "            credit REAL\n"
+    "            verified BOOLEAN\n"
     "        )")
-    cursor.execute("INSERT INTO profiles (user_id, username, phone, credit, ref) VALUES (?, ?, ?, ?, ?)",
-                   (user_id, username, phone, credit, ref))
+    cursor.execute("INSERT INTO profiles (user_id, username, phone, credit, ref, verified) VALUES (?, ?, ?, ?, ?)",
+                   (user_id, username, phone, credit, ref, verified))
     conn.commit()
     cursor.close()
     conn.close()
@@ -65,7 +67,7 @@ def edit_user(user_id: int, parameter: str, value):
 def get_user_data(user_id: int) -> dict:
     """
     Gets user data of a specific user.
-    :param user_id: user_id of corresponding user, 0 for all users
+    :param user_id: user_id of corresponding user
     :return: a dictionary, containing user data
     """
 
@@ -79,6 +81,8 @@ def get_all_user_ids() -> list:
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM profiles")
     data = cursor.fetchall()
+    cursor.close()
+    conn.close()
     result = []
     for user_data in data:
         result.append(user_data[0])
@@ -98,4 +102,48 @@ def new_transaction(user_id: int, amount: float, transaction_type: str, payment_
     :param currency: could be "Rials" or anything else.
     :return: void
     """
+
+
+def user_is_blocked(user_id: int) -> bool:
+    """
+    Checks if user is in blocked list
+    :param user_id: user_id of corresponding user
+    :return: bool, True if user is in blocked list, False otherwise
+    """
+
+    conn = sqlite3.connect('data/UserData.db')
+    cursor = conn.cursor()
+    cursor.execute("CREATE TABLE IF NOT EXISTS blocked_users( id INTEGER PRIMARY KEY, user_id INTEGER)")
+    conn.commit()
+    cursor.execute("SELECT * FROM blocked_users WHERE user_id=?", (user_id,))
+    data = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    if len(data) > 0:
+        return True
+    else:
+        return False
+
+
+def block_unblock_user(user_id: int):
+    """
+    Saves a user in blocked table or removes it.
+    :param user_id: user_id of corresponding user
+    :return: void
+    """
+    conn = sqlite3.connect('data/UserData.db')
+    cursor = conn.cursor()
+    cursor.execute("CREATE TABLE IF NOT EXISTS blocked_users( id INTEGER PRIMARY KEY, user_id INTEGER)")
+    conn.commit()
+    cursor.execute("SELECT * FROM blocked_users WHERE user_id=?", (user_id,))
+    data = cursor.fetchall()
+
+    if len(data) > 0:
+        cursor.execute("DELETE FROM blocked_users WHERE user_id=?", (user_id,))
+    else:
+        cursor.execute("INSERT INTO blocked_users (user_id) VALUES (?)", (user_id,))
+
+    cursor.close()
+    conn.close()
 
