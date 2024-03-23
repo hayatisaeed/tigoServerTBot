@@ -11,8 +11,16 @@ def user_exists(user_id: int) -> bool:
 
     conn = sqlite3.connect(f"data/UserData.db")
     cursor = conn.cursor()
-    cursor.execute("""CREATE TABLE IF NOT EXISTS profiles
-    (user_id INTEGER, username TEXT, phone TEXT, ref INTEGER, credit REAL)""")
+    cursor.execute("\n"
+                   "        CREATE TABLE IF NOT EXISTS profiles (\n"
+                   "            id INTEGER PRIMARY KEY,\n"
+                   "            user_id INTEGER,\n"
+                   "            username TEXT,\n"
+                   "            phone TEXT,\n"
+                   "            ref INTEGER,\n"
+                   "            credit REAL\n"
+                   "            verified BOOLEAN\n"
+                   "        )")
     conn.commit()
     cursor.execute(f"SELECT * FROM profiles WHERE user_id={user_id}")
     row = cursor.fetchone()
@@ -70,11 +78,9 @@ def get_user_data(user_id: int) -> dict:
     :param user_id: user_id of corresponding user
     :return: a dictionary, containing user data
     """
-    # Connect to the database
     conn = sqlite3.connect('data/UserData.db')
     cursor = conn.cursor()
 
-    # Execute the SELECT query
     cursor.execute("SELECT * FROM profiles WHERE user_id=?", (user_id,))
     user_data = cursor.fetchone()
 
