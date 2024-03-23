@@ -120,7 +120,7 @@ async def change_credit(update: Update, context: CallbackContext):
     موجودی کاربر با مشخصات زیر:
     
     id: {user_id}
-    username: {user_data['username']}
+    username: @{user_data['username']}
     
     برابر است با:
     {user_credit}
