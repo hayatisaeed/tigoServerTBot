@@ -166,6 +166,7 @@ def block_unblock_user(user_id: int):
 
     if len(data) > 0:
         cursor.execute("DELETE FROM blocked_users WHERE user_id=?", (user_id,))
+        conn.commit()
     else:
         cursor.execute("INSERT INTO blocked_users (user_id) VALUES (?)", (user_id,))
         conn.commit()
